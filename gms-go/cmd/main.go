@@ -19,12 +19,14 @@ func main() {
 		return true
 	}))
 
+	// ./main.go:27:32: cannot use chatServiceServer (type *service.ChatServiceServer) as type *rpc.ChatServiceService in argument to rpc.RegisterChatServiceService
+
 	chatServiceServer := service.NewChatServiceServer()
 	//chatServiceServer := service.NewChatServiceServer()
 
-	//rpc.RegisterChatServiceService(server, chatServiceServer)
-	//rpc.RegisterChatServiceServer(server, chatServiceServer)
 	rpc.RegisterChatServiceService(server, chatServiceServer)
+	//rpc.RegisterChatServiceServer(server, chatServiceServer)
+	//rpc.RegisterChatServiceService(server, chatServiceServer)
 
 	httpServer := http.Server{
 		Addr: constants.ServerAddress,

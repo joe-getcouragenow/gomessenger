@@ -24,10 +24,11 @@ override FLU_LIB_FSPATH=$(LIB_FSPATH)/gms-flutter
 override FLU_SSAMPLE_FSPATH=$(FLU_LIB_FSPATH)
 
 GO_LIB_FSPATH=$(LIB_FSPATH)/gms-go
-override GO_FSPATH=$(GO_LIB_FSPATH)
+override GO_FSPATH=$(GO_LIB_FSPATH)/cmd
+override GO_BIN_NAME=gms
 override GO_BUILD_OUT_FSPATH=$(GO_LIB_FSPATH)/bin
 override GO_BUILD_OUT_ALL_FSPATH=$(GO_LIB_FSPATH)/bin-all
-override GO_PKG_LIST=????
+override GO_PKG_LIST=.
 
 
 this-print:
