@@ -69,35 +69,12 @@ evans-dep:
 	brew tap ktr0731/evans
 	brew install evans
 
-
-export PROTO_SOURCE_DIR="proto"
-export PROTO_SOURCE_FILE="chat_service.proto"
-grpc-gen:
-	@echo
-	# NOT working !
-	#cd $(LIB_FSPATH) && protoc -Iproto proto/chat_service.proto \
-		--go_out=plugins=grpc:gms-go/rpc \
-		--dart_out=grpc:gms-flutter/lib/rpc
-	@echo
-	#cd $(LIB_FSPATH) && protoc ${PROTO_SOURCE_DIR}/${PROTO_SOURCE_FILE} --go-grpc_out=proto --go_out=proto --dart_out=proto
-	@echo
-	#cd $(LIB_FSPATH) && protoc -Iproto proto/chat_service.proto \
-		--go_out=gms-go/rpc \
-		--go-grpc_out=gms-go/rpc \
-		--dart_out=grpc:gms-flutter/lib/rpc
-	cd $(LIB_FSPATH) && protoc -Iproto proto/chat_service.proto \
-		--go_out=gms-go/rpc \
-		--go-grpc_out=gms-go/rpc \
-		--dart_out=grpc:gms-flutter/lib/rpc
-	@echo
-
 grpc-evans:
 	# CLI for GRPC
 	# Must have GRPC Reflection turns on in code.
 	evans repl $(LIB_FSPATH)/proto/chat_service.proto
 
-### Server
-# :9090
+
 
 
 
@@ -136,6 +113,8 @@ go-mod-tidy:
 	cd $(LIB_FSPATH)/gms-go && go mod verify
 	cd $(LIB_FSPATH)/gms-go && go mod download
 
+### Server
+# :9090
 # Now use the standard go.mk commands like "make go-run", etc
 # TODO ALEX: make go-run. Fails due to /gms-go/service/chat_service.go not being wired up for the new way the protoc-gen-go-grpc works !
 # TODO ALEX: make go-build-all
