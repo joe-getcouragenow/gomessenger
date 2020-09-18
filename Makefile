@@ -7,7 +7,10 @@
 # git include
 BOILERPLATE_FSPATH=./../packages/boilerplate
 include $(BOILERPLATE_FSPATH)/help.mk
+include $(BOILERPLATE_FSPATH)/os.mk
 include $(BOILERPLATE_FSPATH)/gitr.mk
+include $(BOILERPLATE_FSPATH)/flu.mk
+include $(BOILERPLATE_FSPATH)/go.mk
 
 
 LIB=github.com/joe-getcouragenow/gomessenger
@@ -16,7 +19,18 @@ LIB_BIN_FSPATH=$(PWD)/bin
 LIB_DATA_FSPATH=$(PWD)/data
 LIB_BIN=$(LIB_BIN_FSPATH)/gomessenger-$(GO_OS)-$(GO_ARCH)
 
-print:
+
+override FLU_LIB_FSPATH=$(LIB_FSPATH)/gms-flutter
+override FLU_SSAMPLE_FSPATH=$(FLU_LIB_FSPATH)
+
+GO_LIB_FSPATH=$(LIB_FSPATH)/gms-go
+override GO_FSPATH=$(GO_LIB_FSPATH)
+override GO_BUILD_OUT_FSPATH=$(GO_LIB_FSPATH)/bin
+override GO_BUILD_OUT_ALL_FSPATH=$(GO_LIB_FSPATH)/bin-all
+override GO_PKG_LIST=????
+
+
+this-print:
 	@echo
 	@echo GO_OS : $(GO_OS)
 	@echo GO_ARCH : $(GO_ARCH)
@@ -28,6 +42,15 @@ print:
 	@echo LIB_BIN_FSPATH : $(LIB_BIN_FSPATH)
 	@echo LIB_DATA_FSPATH : $(LIB_DATA_FSPATH)
 	@echo LIB_BIN : $(LIB_BIN)
+	@echo
+	@echo
+	$(MAKE) flu-print
+	@echo
+	$(MAKE) go-print
+	@echo
+	@echo
+
+	
 
 dep:
 	git clone https://$(LIB).git $(LIB_FSPATH)
@@ -35,12 +58,6 @@ dep-delete:
 	rm -rf $(LIB_FSPATH)
 vscode-add:
 	code --add $(LIB_FSPATH) --reuse-window
-
-flu-print:
-	@echo flutter devices: 
-	flutter devices
-
-
 
 
 ### GRPC
@@ -77,11 +94,6 @@ grpc-evans:
 	# CLI for GRPC
 	# Must have GRPC Reflection turns on in code.
 	evans repl $(LIB_FSPATH)/proto/chat_service.proto
-
-#  --js_out=import_style=commonjs:gms-web/src/rpc/ \
-#  --grpc-web_out=import_style=commonjs,mode=grpcwebtext:gms-web/src/rpc/ \
-
-
 
 ### Server
 # :9090
@@ -123,31 +135,18 @@ go-mod-tidy:
 	cd $(LIB_FSPATH)/gms-go && go mod verify
 	cd $(LIB_FSPATH)/gms-go && go mod download
 
-go-server-buildrun:
-	cd $(LIB_FSPATH)/gms-go/main && go build -o $(LIB_BIN)
-	
-	# run
-	$(LIB_BIN)
-
-go-server-run:
-	cd $(LIB_FSPATH)/gms-go/main && go run .
+# Now use the standard go.mk commands like "make go-run", etc
+# TODO ALEX: make go-run. Fails due to /gms-go/service/chat_service.go not being wired up for the new way the protoc-gen-go-grpc works !
+# TODO ALEX: make go-build-all
 
 
 
 ### Flutter
 
-## Web tests GRPCWeb works
-flu-web-build:
-	cd $(LIB_FSPATH)/gms-flutter && flutter build web
+# Override for flu.gen
+flu1-gen:
+	# grpc 
+	protoc -Iproto proto/chat_service.proto \
+  		--dart_out=grpc:gms-flutter/lib/rpc
 
-flu-web-run:
-	cd $(LIB_FSPATH)/gms-flutter && flutter run -d chrome
-
-## DESK tests GRPC works
-flu-desk-init:
-	cd $(LIB_FSPATH)/gms-flutter && hover init
-flu-desk-run:
-	cd $(LIB_FSPATH)/gms-flutter && hover run
-
-flu-mob-run:
-	cd $(LIB_FSPATH)/gms-flutter && flutter run -d 
+# Now use the standard flu.mk commands like "make flu-web-run", etc
