@@ -1,13 +1,16 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
+	"google.golang.org/grpc"
+
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
+
 	"github.com/duckladydinh/gomessenger/constants"
 	"github.com/duckladydinh/gomessenger/rpc"
 	"github.com/duckladydinh/gomessenger/service"
-	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	"google.golang.org/grpc"
-	"log"
-	"net/http"
 )
 
 func main() {
@@ -17,7 +20,11 @@ func main() {
 	}))
 
 	chatServiceServer := service.NewChatServiceServer()
-	rpc.RegisterChatServiceServer(server, chatServiceServer)
+	//chatServiceServer := service.NewChatServiceServer()
+
+	//rpc.RegisterChatServiceService(server, chatServiceServer)
+	//rpc.RegisterChatServiceServer(server, chatServiceServer)
+	rpc.RegisterChatServiceService(server, chatServiceServer)
 
 	httpServer := http.Server{
 		Addr: constants.ServerAddress,

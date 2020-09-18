@@ -1,21 +1,25 @@
 package db
 
 import (
-	"github.com/duckladydinh/gomessenger/api"
 	"sync"
-)
 
+	"github.com/duckladydinh/gomessenger/api"
+	
+)
+// ChannelDB ...
 type ChannelDB struct {
 	data map[string]chan *api.ChatMessage
 	mux  sync.Mutex
 }
 
+// NewChannelDB ...
 func NewChannelDB() *ChannelDB {
 	return &ChannelDB{
 		data: make(map[string]chan *api.ChatMessage),
 	}
 }
 
+// NewChannel ...
 func (s *ChannelDB) NewChannel(userId string) chan *api.ChatMessage {
 	s.mux.Lock()
 	defer s.mux.Unlock()
@@ -25,6 +29,7 @@ func (s *ChannelDB) NewChannel(userId string) chan *api.ChatMessage {
 	return ch
 }
 
+// RemoveChannel ...
 func (s *ChannelDB) RemoveChannel(userId string) {
 	s.mux.Lock()
 	defer s.mux.Unlock()
@@ -32,6 +37,7 @@ func (s *ChannelDB) RemoveChannel(userId string) {
 	delete(s.data, userId)
 }
 
+// Broadcast ...
 func (s *ChannelDB) Broadcast(msg *api.ChatMessage) {
 	s.mux.Lock()
 	defer s.mux.Unlock()

@@ -1,16 +1,19 @@
 package db
 
 import (
-	"github.com/duckladydinh/gomessenger/api"
 	"sync"
+
+	"github.com/duckladydinh/gomessenger/api"
 )
 
+// MessageDB ...
 type MessageDB struct {
 	data          []*api.ChatMessage
 	lastTimestamp int64
 	mux           sync.Mutex
 }
 
+// NewMessageDB ...
 func NewMessageDB() *MessageDB {
 	return &MessageDB{
 		data:          make([]*api.ChatMessage, 0),
@@ -18,6 +21,7 @@ func NewMessageDB() *MessageDB {
 	}
 }
 
+// AddMessage ...
 func (s *MessageDB) AddMessage(msg *api.ChatMessage) {
 	s.mux.Lock()
 	defer s.mux.Unlock()
@@ -30,6 +34,7 @@ func (s *MessageDB) AddMessage(msg *api.ChatMessage) {
 	}
 }
 
+// GetMessages ...
 func (s *MessageDB) GetMessages(after int64) []*api.ChatMessage {
 	s.mux.Lock()
 	defer s.mux.Unlock()
@@ -48,6 +53,7 @@ func (s *MessageDB) GetMessages(after int64) []*api.ChatMessage {
 	return res
 }
 
+// LastTimestamp ...
 func (s *MessageDB) LastTimestamp() int64 {
 	s.mux.Lock()
 	defer s.mux.Unlock()

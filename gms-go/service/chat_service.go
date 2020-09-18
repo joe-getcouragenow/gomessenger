@@ -2,14 +2,16 @@ package service
 
 import (
 	"context"
+	"log"
+	"sync"
+
 	"github.com/duckladydinh/gomessenger/api"
 	"github.com/duckladydinh/gomessenger/db"
 	"github.com/duckladydinh/gomessenger/rpc"
 	"github.com/duckladydinh/gomessenger/util"
-	"log"
-	"sync"
 )
 
+// ChatServiceServer ...
 type ChatServiceServer struct {
 	messageStore *db.MessageDB
 	userStore    *db.UserDB
@@ -17,6 +19,7 @@ type ChatServiceServer struct {
 	mux          sync.Mutex
 }
 
+// NewChatServiceServer ...
 func NewChatServiceServer() *ChatServiceServer {
 	return &ChatServiceServer{
 		messageStore: db.NewMessageDB(),
@@ -25,6 +28,7 @@ func NewChatServiceServer() *ChatServiceServer {
 	}
 }
 
+// RegisterUser ...
 func (server *ChatServiceServer) RegisterUser(_ context.Context, r *rpc.RegisterUserRequest) (*rpc.RegisterUserResponse, error) {
 	server.mux.Lock()
 	defer server.mux.Unlock()
@@ -41,6 +45,7 @@ func (server *ChatServiceServer) RegisterUser(_ context.Context, r *rpc.Register
 	return res, nil
 }
 
+// AddChatMessage ...
 func (server *ChatServiceServer) AddChatMessage(_ context.Context, r *rpc.AddChatMessageRequest) (*rpc.Empty, error) {
 	server.mux.Lock()
 	defer server.mux.Unlock()
@@ -60,6 +65,7 @@ func (server *ChatServiceServer) AddChatMessage(_ context.Context, r *rpc.AddCha
 	return new(rpc.Empty), nil
 }
 
+// GetChatMessageStream ...
 func (server *ChatServiceServer) GetChatMessageStream(r *rpc.GetChatMessageStreamRequest, s rpc.ChatService_GetChatMessageStreamServer) error {
 	server.mux.Lock()
 
