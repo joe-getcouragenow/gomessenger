@@ -8,9 +8,9 @@ import (
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
-	"github.com/duckladydinh/gomessenger/constants"
-	"github.com/duckladydinh/gomessenger/rpc"
-	"github.com/duckladydinh/gomessenger/service"
+	"github.com/joe-getcouragenow/gomessenger/constants"
+	"github.com/joe-getcouragenow/gomessenger/rpc"
+	"github.com/joe-getcouragenow/gomessenger/service"
 )
 
 func main() {
@@ -24,9 +24,11 @@ func main() {
 	chatServiceServer := service.NewChatServiceServer()
 	//chatServiceServer := service.NewChatServiceServer()
 
-	rpc.RegisterChatServiceService(server, chatServiceServer)
-	//rpc.RegisterChatServiceServer(server, chatServiceServer)
-	//rpc.RegisterChatServiceService(server, chatServiceServer)
+	rpc.RegisterChatServiceService(server, &rpc.ChatServiceService{
+		RegisterUser: chatServiceServer.RegisterUser,
+		AddChatMessage: chatServiceServer.AddChatMessage,
+		GetChatMessageStream: chatServiceServer.GetChatMessageStream,
+	})
 
 	httpServer := http.Server{
 		Addr: constants.ServerAddress,

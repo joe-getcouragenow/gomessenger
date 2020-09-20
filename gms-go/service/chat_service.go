@@ -5,10 +5,10 @@ import (
 	"log"
 	"sync"
 
-	"github.com/duckladydinh/gomessenger/api"
-	"github.com/duckladydinh/gomessenger/db"
-	"github.com/duckladydinh/gomessenger/rpc"
-	"github.com/duckladydinh/gomessenger/util"
+	"github.com/joe-getcouragenow/gomessenger/api"
+	"github.com/joe-getcouragenow/gomessenger/db"
+	"github.com/joe-getcouragenow/gomessenger/rpc"
+	"github.com/joe-getcouragenow/gomessenger/util"
 )
 
 // ChatServiceServer ...
