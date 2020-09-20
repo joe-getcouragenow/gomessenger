@@ -8,9 +8,9 @@ import (
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
-	"github.com/duckladydinh/gomessenger/constants"
-	"github.com/duckladydinh/gomessenger/rpc"
-	"github.com/duckladydinh/gomessenger/service"
+	"github.com/joe-getcouragenow/gomessenger/constants"
+	"github.com/joe-getcouragenow/gomessenger/rpc"
+	"github.com/joe-getcouragenow/gomessenger/service"
 )
 
 func main() {
