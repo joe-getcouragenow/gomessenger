@@ -24,7 +24,7 @@ func main() {
 	chatServiceServer := service.NewChatServiceServer()
 	//chatServiceServer := service.NewChatServiceServer()
 
-	rpc.RegisterChatServiceService(server, chatServiceServer)
+	rpc.RegisterChatServiceServer(server, chatServiceServer)
 	//rpc.RegisterChatServiceServer(server, chatServiceServer)
 	//rpc.RegisterChatServiceService(server, chatServiceServer)
 

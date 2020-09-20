@@ -74,17 +74,13 @@ grpc-evans:
 	# Must have GRPC Reflection turns on in code.
 	evans repl $(LIB_FSPATH)/proto/chat_service.proto
 
-
-
-
-
 go-gen-dep:
 	# Install protoc
 	#brew install protobuf
 
 	# Install protoc-gen-go
-	go get github.com/golang/protobuf/protoc-gen-go
-	go install google.golang.org/protobuf/cmd/protoc-gen-go
+	go get -u -v github.com/golang/protobuf/protoc-gen-go
+	# go install google.golang.org/protobuf/cmd/protoc-gen-go
 	stat ${GOPATH}/bin/protoc-gen-go
 
 	# Install protoc-gen-go-grpc
@@ -101,7 +97,7 @@ go-gen:
 	# gen runs from the go folder so that the same go.mod is used for gen and run.
 	cd $(LIB_FSPATH)/gms-go && go generate
 	# copy to right place hack
-	mv $(LIB_FSPATH)/proto/*.go $(LIB_FSPATH)/gms-go/rpc/
+	# mv $(LIB_FSPATH)/proto/*.go $(LIB_FSPATH)/gms-go/rpc/
 	
 
 go-mod-update:
