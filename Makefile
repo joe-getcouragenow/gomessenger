@@ -1,4 +1,4 @@
-# https://github.com/duckladydinh/gomessenger
+# https://github.com/joe-getcouragenow/gomessenger
 
 # fork: github.com/joe-getcouragenow/gomessenger
 # WOrks
@@ -30,6 +30,7 @@ override GO_BUILD_OUT_FSPATH=$(GO_LIB_FSPATH)/bin
 override GO_BUILD_OUT_ALL_FSPATH=$(GO_LIB_FSPATH)/bin-all
 override GO_PKG_LIST=.
 
+GO_STATIC_BUILDARGS := go build -a -tags netgo -ldflags '-w -extldflags -static'
 
 this-print:
 	@echo
@@ -76,12 +77,15 @@ grpc-evans:
 
 go-gen-dep:
 	# Install protoc
-	#brew install protobuf
+	brew install protobuf
 
 	# Install protoc-gen-go
-	go get -u -v github.com/golang/protobuf/protoc-gen-go
-	# go install google.golang.org/protobuf/cmd/protoc-gen-go
+	# go get -u -v github.com/golang/protobuf/protoc-gen-go
+	go install google.golang.org/protobuf/cmd/protoc-gen-go
 	stat ${GOPATH}/bin/protoc-gen-go
+
+	# Install grpc-web
+	go get -u -v github.com/improbable-eng/grpc-web/go/grpcweb
 
 	# Install protoc-gen-go-grpc
 	go get google.golang.org/grpc/cmd/protoc-gen-go-grpc
@@ -96,7 +100,7 @@ go-gen-dep:
 go-gen:
 	# gen runs from the go folder so that the same go.mod is used for gen and run.
 	cd $(LIB_FSPATH)/gms-go && go generate
-	# copy to right place hack
+	# copy to right place hack (this we don't need)
 	# mv $(LIB_FSPATH)/proto/*.go $(LIB_FSPATH)/gms-go/rpc/
 	
 
@@ -114,7 +118,6 @@ go-mod-tidy:
 # Now use the standard go.mk commands like "make go-run", etc
 # TODO ALEX: make go-run. Fails due to /gms-go/service/chat_service.go not being wired up for the new way the protoc-gen-go-grpc works !
 # TODO ALEX: make go-build-all
-
 
 
 ### Flutter
