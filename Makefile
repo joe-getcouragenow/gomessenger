@@ -80,7 +80,8 @@ go-gen-dep:
 	brew install protobuf
 
 	# Install protoc-gen-go
-	# go get -u -v github.com/golang/protobuf/protoc-gen-go
+	#go get -u -v github.com/golang/protobuf/protoc-gen-go
+	go get -u -v google.golang.org/protobuf/cmd/protoc-gen-go
 	go install google.golang.org/protobuf/cmd/protoc-gen-go
 	stat ${GOPATH}/bin/protoc-gen-go
 

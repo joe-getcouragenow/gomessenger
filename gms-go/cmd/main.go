@@ -24,9 +24,11 @@ func main() {
 	chatServiceServer := service.NewChatServiceServer()
 	//chatServiceServer := service.NewChatServiceServer()
 
-	rpc.RegisterChatServiceServer(server, chatServiceServer)
-	//rpc.RegisterChatServiceServer(server, chatServiceServer)
-	//rpc.RegisterChatServiceService(server, chatServiceServer)
+	rpc.RegisterChatServiceService(server, &rpc.ChatServiceService{
+		RegisterUser: chatServiceServer.RegisterUser,
+		AddChatMessage: chatServiceServer.AddChatMessage,
+		GetChatMessageStream: chatServiceServer.GetChatMessageStream,
+	})
 
 	httpServer := http.Server{
 		Addr: constants.ServerAddress,
